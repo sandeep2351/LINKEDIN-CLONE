@@ -194,7 +194,6 @@ const Post = ({ post }) => {
                     onClick={() => handleShare("facebook")}
                   >
                     <FaFacebookF size={18} className="mr-2" />
-                    Facebook
                   </button>
                   {/* Twitter Share Button */}
                   <button
@@ -202,7 +201,6 @@ const Post = ({ post }) => {
                     onClick={() => handleShare("twitter")}
                   >
                     <FaTwitter size={18} className="mr-2" />
-                    Twitter
                   </button>
                   {/* WhatsApp Share Button */}
                   <button
@@ -210,7 +208,6 @@ const Post = ({ post }) => {
                     onClick={() => handleShare("whatsapp")}
                   >
                     <FaWhatsapp size={18} className="mr-2" />
-                    WhatsApp
                   </button>
                 </div>
               </div>
