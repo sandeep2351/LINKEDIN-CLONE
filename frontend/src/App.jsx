@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/auth/LoginPage";
 import Signup from "./pages/auth/SignUpPage";
-import Homepage from "./pages/Homepage";
+import Homepage from "./pages/HomePage";
 import NotificationPage from "./pages/NotificationPage";
 import NetworkPage from "./pages/NetworkPage";
 import PostPage from "./pages/PostPage";
