@@ -193,14 +193,14 @@ const Post = ({ post }) => {
                     className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100"
                     onClick={() => handleShare("facebook")}
                   >
-                    <FaFacebookF size={18} className="mr-2" />
+                    <FaFacebookF size={18} className="" />
                   </button>
                   {/* Twitter Share Button */}
                   <button
                     className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100"
                     onClick={() => handleShare("twitter")}
                   >
-                    <FaTwitter size={18} className="mr-2" />
+                    <FaTwitter size={18} className="" />
                   </button>
                   {/* WhatsApp Share Button */}
                   <button
