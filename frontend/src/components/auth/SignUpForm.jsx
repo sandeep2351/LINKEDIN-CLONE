@@ -9,67 +9,80 @@ const SignUpForm = () => {
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-
 	const queryClient = useQueryClient();
 
 	const { mutate: signUpMutation, isLoading } = useMutation({
 		mutationFn: async (data) => {
-			const res = await axiosInstance.post("/auth/signup", data);
-			return res.data;
+			const response = await axiosInstance.post("/auth/signup", data);
+			return response.data;
 		},
 		onSuccess: () => {
-			toast.success("Account created successfully");
+			toast.success("Account created successfully!");
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			// Reset form fields after successful signup
+			setName("");
+			setEmail("");
+			setUsername("");
+			setPassword("");
 		},
-		onError: (err) => {
-			toast.error(err.response.data.message || "Something went wrong");
+		onError: (error) => {
+			const errorMessage = error.response?.data?.message || "Something went wrong. Please try again.";
+			toast.error(errorMessage);
 		},
 	});
 
 	const handleSignUp = (e) => {
 		e.preventDefault();
+
+		// Basic form validation
+		if (password.length < 6) {
+			toast.error("Password must be at least 6 characters long");
+			return;
+		}
+
 		signUpMutation({ name, username, email, password });
 	};
 
 	return (
-		<form onSubmit={handleSignUp} className='flex flex-col gap-4'>
+		<form onSubmit={handleSignUp} className="flex flex-col gap-4 w-full max-w-md mx-auto">
 			<input
-				type='text'
-				placeholder='Full name'
+				type="text"
+				placeholder="Full name"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
-				className='input input-bordered w-full'
+				className="input input-bordered w-full"
 				required
 			/>
 			<input
-				type='text'
-				placeholder='Username'
+				type="text"
+				placeholder="Username"
 				value={username}
 				onChange={(e) => setUsername(e.target.value)}
-				className='input input-bordered w-full'
+				className="input input-bordered w-full"
 				required
 			/>
 			<input
-				type='email'
-				placeholder='Email'
+				type="email"
+				placeholder="Email"
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
-				className='input input-bordered w-full'
+				className="input input-bordered w-full"
 				required
 			/>
 			<input
-				type='password'
-				placeholder='Password (6+ characters)'
+				type="password"
+				placeholder="Password (6+ characters)"
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				className='input input-bordered w-full'
+				className="input input-bordered w-full"
 				required
 			/>
 
-			<button type='submit' disabled={isLoading} className='btn btn-primary w-full text-white'>
-				{isLoading ? <Loader className='size-5 animate-spin' /> : "Agree & Join"}
+			<button type="submit" disabled={isLoading} className={`btn btn-primary w-full ${isLoading && "opacity-50 cursor-not-allowed"}`}>
+				{isLoading ? <Loader className="w-5 h-5 animate-spin mx-auto" /> : "Agree & Join"}
 			</button>
 		</form>
 	);
 };
+
 export default SignUpForm;
