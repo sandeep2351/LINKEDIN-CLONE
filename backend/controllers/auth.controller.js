@@ -25,12 +25,11 @@ export const signup = async (req, res) => {
 
 		// Validate password length
 		if (password.length < 6) {
-			return res.status(400).json({ message: "Password must be at least 6 characters" });
+			return res.status(400).json({ message: "Password must be at least 6 characters long" });
 		}
 
 		// Hash the password
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
+		const hashedPassword = await bcrypt.hash(password, 10);
 
 		// Create the user
 		const user = new User({
@@ -45,7 +44,7 @@ export const signup = async (req, res) => {
 		// Generate JWT token
 		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
 
-		// Respond with token to store in localStorage on the client side
+		// Respond with token
 		res.status(201).json({ 
 			message: "User registered successfully", 
 			token 
@@ -56,10 +55,10 @@ export const signup = async (req, res) => {
 		try {
 			await sendWelcomeEmail(user.email, user.name, profileUrl);
 		} catch (emailError) {
-			console.error("Error sending welcome Email", emailError);
+			console.error("Error sending welcome email", emailError);
 		}
 	} catch (error) {
-		console.log("Error in signup: ", error.message);
+		console.error("Error in signup:", error.message);
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -83,19 +82,19 @@ export const login = async (req, res) => {
 		// Generate JWT token
 		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
 
-		// Respond with token to store in localStorage on the client side
+		// Respond with token
 		res.json({ 
 			message: "Logged in successfully", 
 			token 
 		});
 	} catch (error) {
-		console.error("Error in login controller:", error);
-		res.status(500).json({ message: "Server error" });
+		console.error("Error in login controller:", error.message);
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
 export const logout = (req, res) => {
-	// Since we're using localStorage, the logout action will be handled on the client side
+	// Logout handled on client-side
 	res.json({ message: "Logged out successfully" });
 };
 
@@ -103,7 +102,7 @@ export const getCurrentUser = async (req, res) => {
 	try {
 		res.json(req.user);
 	} catch (error) {
-		console.error("Error in getCurrentUser controller:", error);
-		res.status(500).json({ message: "Server error" });
+		console.error("Error in getCurrentUser controller:", error.message);
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
